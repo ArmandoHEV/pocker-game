@@ -5,43 +5,20 @@ import { useEffect, useState } from 'react';
 
 export default function Home() {
 
-  const [combination, setConbinations] = useState(cards);
+  const [combination, setCombinations] = useState(cards);
   const [card2, setCard1] = useState(undefined);
   const [card1, setCard2] = useState(undefined);
   const [newGame, setNewGame] = useState(undefined);
   const [probability, setProbability] = useState(undefined);
 
   useEffect(() => {
-    /*fetch('https://pocker-api.armandohernan20.repl.co/', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    }).then(res => {
-      return res.json();
-    })
-        .then(data => {
-          console.log('Initial response: ', data)
-          setConbinations(data)
-        })
-        .catch(error => {
-          console.log(error)
-          return error
-        });*/
+      setCard1(Math.floor(Math.random() * 51));
+      setCard2(Math.floor(Math.random() * 51));
   }, [])
 
     const generateCards = () => {
       setCard1(Math.floor(Math.random() * 51));
       setCard2(Math.floor(Math.random() * 51));
-    }
-
-    const getProbability = () => {
-      if(combination[card1].Nombre_Naipes === combination[card2].Nombre_Naipes){
-          console.log('Same')
-
-      }else{
-          console.log('Different')
-      }
     }
 
     const factorialize = (num) => {
@@ -108,9 +85,19 @@ export default function Home() {
       }
     }
 
-    useEffect(() => {
-
-    }, [probability])
+    const getColorProbability = () => {
+      if(sameNaipe(card1, card2)){
+          setProbability(2*((
+              (getCombinations(12, 4)-10)*4
+          )
+              /getCombinations(50, 5)));
+      }else{
+          setProbability((
+                  (getCombinations(11, 3)-10)*4
+              )
+              /getCombinations(50, 5));
+      }
+    }
 
   return (
       <div className={styles.container}>
@@ -128,12 +115,12 @@ export default function Home() {
           {card2 !== undefined ? <p>{combination[card2].Color_Naipes}-{combination[card2].Nombre_Naipes}-{combination[card2].Numero_Carta}</p> : null}
           Calcule probabilidad para:
           <button onClick={() => {
-              console.log(getCombinations(50, 5));
+              getColorProbability();
           }}>
               Color
           </button>
           <button onClick={() => {
-              getStairProbability()
+              getStairProbability();
           }}>
               Escalera real
           </button>
