@@ -14,6 +14,7 @@ export default function Home() {
   useEffect(() => {
       setCard1(Math.floor(Math.random() * 51));
       setCard2(Math.floor(Math.random() * 51));
+      console.log(getCombinations(52, 5))
   }, [])
 
     const generateCards = () => {
@@ -74,7 +75,7 @@ export default function Home() {
               }
           }else{
               console.log('2 different')
-              setProbability(2*(getCombinations(4, 1)/getCombinations(50, 2)));
+              setProbability(2*(getCombinations(4, 1)/getCombinations(50, 4)));
           }
       }else if(cardForRealStair(combination[card1]) || cardForRealStair(combination[card2])){
           console.log('1 of two real')
@@ -87,16 +88,17 @@ export default function Home() {
 
     const getColorProbability = () => {
       if(sameNaipe(card1, card2)){
-          setProbability(2*((
-              (getCombinations(12, 4)-10)*4
-          )
-              /getCombinations(50, 5)));
+          setProbability((getColorEvent(1)*4 /getCombinations(50, 5)));
       }else{
-          setProbability((
-                  (getCombinations(11, 3)-10)*4
-              )
-              /getCombinations(50, 5));
+          setProbability(2*((getColorEvent(2)) /getCombinations(50, 5)));
       }
+    }
+
+    const getColorEvent = (type) => {
+      if(type === 1)
+          return (getCombinations(11, 3)-10)
+      else
+          return (getCombinations(12, 4)-10)*4
     }
 
   return (
